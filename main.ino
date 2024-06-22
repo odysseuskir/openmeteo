@@ -67,28 +67,27 @@ void loop() {
   lcd.setCursor(15, 1);
   lcd.print("C");
 
+  delay(2000);
+
   sensors_event_t event;
   bmp.getEvent(&event);
+  float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
 
-  if (event.pressure) {
-    Serial.print("Pressure:    ");
-    Serial.print(event.pressure);
-    Serial.println(" hPa");
+  lcd.clear();
 
-    float bmpTemperature;
-    bmp.getTemperature(&bmpTemperature);
-    Serial.print("Temperature: ");
-    Serial.print(bmpTemperature);
-    Serial.println(" C");
+  lcd.setCursor(0, 0);
+  lcd.print("Pres:");
+  lcd.setCursor(6, 0);
+  lcd.print(event.pressure);
+  lcd.setCursor(13, 0);
+  lcd.print("hPa");
 
-    float seaLevelPressure = SENSORS_PRESSURE_SEALEVELHPA;
-    Serial.print("Altitude:    ");
-    Serial.print(bmp.pressureToAltitude(seaLevelPressure, event.pressure));
-    Serial.println(" m");
-    Serial.println("");
-  } else {
-    Serial.println("Sensor error");
-  }
+  lcd.setCursor(0, 1);
+  lcd.print("Altitude:");
+  lcd.setCursor(10, 1);
+  lcd.print(bmp.pressureToAltitude(seaLevelPressure, event.pressure));
+  lcd.setCursor(15, 1);
+  lcd.print("m");
 
   delay(2000);
 }
